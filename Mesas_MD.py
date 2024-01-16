@@ -124,26 +124,6 @@ def AssignSeats ():
             )
 
 
-
-
-    # maximize the total value of deal mix per customer offered deals
-    # 17/12/2023. Lo siguiente da un error. Hay que ver cómo escribirlo para que no 
-    # haya un quicksum dentro de otro.
-
-    # colocate = {}
-
-    # colocate[p1][p2] = dimod.quicksum(same_table[p1, p2, t] for p1 in range (num_persons - 1) for p2 in range (p1+1, num_persons) for t in range (total_num_tables))
-
-    """cqm.set_objective (
-        dimod.quicksum (
-            connections[p1][p2] * same_table[p1, p2, t]
-            for p1 in range(num_persons - 1)
-            for p2 in range(p1 + 1, num_persons)
-            for t in range(total_num_tables)
-            if connections[p1][p2] > 0
-        ),
-    )"""
-
     colocate = {}
 
     for p1 in range (num_persons - 1):
@@ -170,18 +150,15 @@ def AssignSeats ():
                                label="MD seats allocation")  
                                
     feasible_sampleset = sampleset.filter(lambda row: row.is_feasible)  
-    
+
+    print(sampleset.first.sample)
+
     if len(feasible_sampleset):      
        best = feasible_sampleset.first
        print("{} feasible solutions of {}.".format(
           len(feasible_sampleset), len(sampleset)))
       
 
-    # selected_bins = [key for key, val in best.sample.items() if 'bin_used' in key and val]   
-    # print("{} bins are used.".format(len(selected_bins)))
-
-
-    
     
 def main(argv: Sequence[str]) -> None:
     #if len(argv) > 1:
